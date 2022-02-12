@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.smal.springbootrestapijpa.entity.Employee;
-import ru.smal.springbootrestapijpa.service.impl.EmployeeServiceImpl;
+import ru.smal.springbootrestapijpa.persistence.entity.User;
+import ru.smal.springbootrestapijpa.service.impl.UserServiceImpl;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -15,13 +15,13 @@ import java.util.List;
 @Slf4j
 @RestController //@Controller + @ResponseBody
 @RequiredArgsConstructor
-@RequestMapping("/api/employees")
-public class EmployeeController {
+@RequestMapping("/employees")
+public class UserController {
 
-    private final EmployeeServiceImpl service;
+    private final UserServiceImpl service;
 
     @GetMapping
-    public List<Employee> getEmployeeList() {
+    public List<User> getEmployeeList() {
         return service.findAll();
     }
 
@@ -34,17 +34,22 @@ public class EmployeeController {
      * }
      */
     @PostMapping
-    public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
-        Employee save = service.save(employee);
+    public ResponseEntity<User> saveEmployee(@RequestBody User user) {
+        User save = service.save(user);
         log.info(MessageFormat.format("Initial save {0} in database", save));
-        log.info(MessageFormat.format("Save success", employee));
-        return new ResponseEntity<Employee>(save, HttpStatus.CREATED);
+        log.info(MessageFormat.format("Save success", user));
+        return new ResponseEntity<User>(save, HttpStatus.CREATED);
     }
 
     /** localhost:8080/api/employees/1 */
     @GetMapping("{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
+    public ResponseEntity<User> getEmployeeById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.findById(id));
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<User> getEmployeeByFirstName(@RequestParam String firstName) {
+        return ResponseEntity.ok(service.findByFirstName(firstName));
     }
 
     /**
@@ -58,9 +63,9 @@ public class EmployeeController {
      * 2) localhost:8080/api/employees/1
      */
     @PutMapping("{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id,
-                                                   @RequestBody Employee employee) {
-        return ResponseEntity.ok(service.update(employee, id));
+    public ResponseEntity<User> updateEmployee(@PathVariable("id") Long id,
+                                               @RequestBody User user) {
+        return ResponseEntity.ok(service.update(user, id));
     }
 
     /** localhost:8081/api/employee/1 */
@@ -74,13 +79,13 @@ public class EmployeeController {
      * Добавить объект через RequestParam
      */
     @PutMapping(path = "/employee")
-    public ResponseEntity<Employee> putEmployeeRequestParam(@RequestParam() String firstName,
-                                                            @RequestParam String lastName) {
-        Employee employee = new Employee();
-        employee.setFirstName(firstName);
-        employee.setLastName(lastName);
-        service.save(employee);
+    public ResponseEntity<User> putEmployeeRequestParam(@RequestParam String firstName,
+                                                        @RequestParam String lastName) {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        service.save(user);
         log.info("Save success");
-        return ResponseEntity.status(HttpStatus.CREATED).body(employee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }

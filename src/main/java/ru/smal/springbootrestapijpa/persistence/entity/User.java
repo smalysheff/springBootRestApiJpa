@@ -1,4 +1,4 @@
-package ru.smal.springbootrestapijpa.entity;
+package ru.smal.springbootrestapijpa.persistence.entity;
 
 import lombok.*;
 
@@ -9,14 +9,15 @@ import javax.persistence.*;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "employees")
-public class Employee {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String lastName;
     private String firstName;
+    private String password;
     private String email;
 
 }

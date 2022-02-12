@@ -2,26 +2,26 @@ package ru.smal.springbootrestapijpa.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.smal.springbootrestapijpa.entity.Employee;
+import ru.smal.springbootrestapijpa.persistence.entity.User;
 import ru.smal.springbootrestapijpa.exeption.ResourceNotFoundException;
-import ru.smal.springbootrestapijpa.repository.EmployeeRepository;
-import ru.smal.springbootrestapijpa.service.EmployeeService;
+import ru.smal.springbootrestapijpa.persistence.repository.UserRepository;
+import ru.smal.springbootrestapijpa.service.UserService;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeServiceImpl implements EmployeeService {
+public class UserServiceImpl implements UserService {
 
-    private final EmployeeRepository repository;
+    private final UserRepository repository;
 
     @Override
-    public List<Employee> findAll() {
+    public List<User> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Employee findById(Long id) {
+    public User findById(Long id) {
 //        Optional<Employee> employee = repository.findById(id);
 //        if (employee.isPresent()) {
 //            return employee.get();
@@ -33,17 +33,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee save(Employee employee) {
-        return repository.save(employee);
+    public User findByFirstName(String firstName) {
+        return repository.findByFirstName(firstName);
     }
 
     @Override
-    public Employee update(Employee employee, Long id) {
-        Employee existingEmployee = findById(id);
-        existingEmployee.setFirstName(employee.getFirstName());
-        existingEmployee.setLastName(employee.getLastName());
-        existingEmployee.setEmail(employee.getEmail());
-        return repository.save(existingEmployee);
+    public User save(User user) {
+        return repository.save(user);
+    }
+
+    @Override
+    public User update(User user, Long id) {
+        User existingUser = findById(id);
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        return repository.save(existingUser);
     }
 
     @Override
