@@ -2,6 +2,7 @@ package ru.smal.springbootrestapijpa.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.smal.springbootrestapijpa.dto.UserDto;
 import ru.smal.springbootrestapijpa.persistence.entity.User;
 import ru.smal.springbootrestapijpa.exeption.ResourceNotFoundException;
 import ru.smal.springbootrestapijpa.persistence.repository.UserRepository;
@@ -16,45 +17,47 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Override
-    public List<User> findAll() {
-        return repository.findAll();
+    public List<UserDto> findAll() {
+        List<User> users = repository.findAll();
+        return users.stream().map(UserDto::build).toList();
     }
 
     @Override
-    public User findById(Long id) {
-//        Optional<Employee> employee = repository.findById(id);
-//        if (employee.isPresent()) {
-//            return employee.get();
-//        } else {
-//            throw new ResourceNotFoundException("Employee", "id", id);
-//        }
-        return repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Employee", "id", id));
+    public UserDto findById(Long id) {
+        User user = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User", "id", id));
+        return UserDto.build(user);
     }
 
     @Override
-    public User findByFirstName(String firstName) {
-        return repository.findByFirstName(firstName);
+    public UserDto findByFirstName(String firstName) {
+        User user = repository.findByFirstName(firstName);
+        return UserDto.build(user);
     }
 
     @Override
-    public User save(User user) {
-        return repository.save(user);
+    public UserDto save(User user) {
+        return UserDto.build(repository.save(user));
     }
 
     @Override
-    public User update(User user, Long id) {
-        User existingUser = findById(id);
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setEmail(user.getEmail());
-        return repository.save(existingUser);
+    public UserDto update(User user, Long id) {
+        User existUser = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User", "id", id));
+        existUser.setFirstName(user.getFirstName());
+        existUser.setLastName(user.getLastName());
+        existUser.setLogin(user.getLogin());
+        existUser.setPassword(user.getPassword());
+        existUser.setEmail(user.getEmail());
+        return UserDto.build(repository.save(existUser));
     }
 
     @Override
-    public void deleteById(Long id) {
-        //check whether a employee exist in a DB or not
-        findById(id);
+    public Long deleteById(Long id) {
+        //check whether an employee exist in a DB or not
+        repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User", "id", id));
         repository.deleteById(id);
+        return id;
     }
 }
