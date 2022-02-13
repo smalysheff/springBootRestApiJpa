@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +25,21 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
-    @Column(nullable = false, updatable = false)
+
+    @NotNull(message = "login should not b null")
     private String login;
-    @Column(nullable = false)
+
+    @NotNull(message = "password should not b null")
     private String password;
-    @Column(nullable = false)
+
+    @Email(message = "Please enter the valid email address")
     private String email;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
     @UpdateTimestamp
-    @Column
     private LocalDateTime updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

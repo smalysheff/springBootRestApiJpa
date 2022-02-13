@@ -26,6 +26,9 @@ public class UserDto {
 
 
     public static UserDto build(User user) {
+        if (user == null) {
+            return null;
+        }
         return UserDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())

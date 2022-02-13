@@ -20,6 +20,9 @@ public class TodoDto {
     private LocalDateTime updatedAt;
 
     public static TodoDto build(Todo todo) {
+        if (todo == null) {
+            return null;
+        }
         return TodoDto.builder()
                 .id(todo.getId())
                 .title(todo.getTitle())

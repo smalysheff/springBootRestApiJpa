@@ -11,6 +11,7 @@ import ru.smal.springbootrestapijpa.persistence.entity.User;
 import ru.smal.springbootrestapijpa.service.UserService;
 import ru.smal.springbootrestapijpa.service.impl.UserServiceImpl;
 
+import javax.validation.Valid;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> saveObject(@RequestBody User user) {
+    public ResponseEntity<UserDto> saveObject(@Valid @RequestBody User user) {
         UserDto save = service.save(user);
         log.info(MessageFormat.format("Save successfully! {0}", user));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);

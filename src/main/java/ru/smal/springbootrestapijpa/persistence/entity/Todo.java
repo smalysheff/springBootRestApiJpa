@@ -6,8 +6,10 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,10 +23,9 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull(message = "title should not b null")
     private String title;
 
-    @Column(nullable = false)
     private Boolean completed;
 
     @CreationTimestamp
@@ -32,7 +33,6 @@ public class Todo {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column
     private LocalDateTime updateAt;
 
     @ManyToOne
