@@ -2,6 +2,7 @@ package ru.smal.springbootrestapijpa.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.springframework.util.CollectionUtils;
 import ru.smal.springbootrestapijpa.persistence.entity.User;
 
 import java.util.List;
@@ -27,7 +28,9 @@ public class UserDto {
                 .lastName(user.getLastName())
                 .login(user.getLogin())
                 .email(user.getEmail())
-                .todos(user.getTodos().stream().map(TodoDto::build).toList())
+                .todos(CollectionUtils.isEmpty(user.getTodos())
+                                ? null
+                                : user.getTodos().stream().map(TodoDto::build).toList())
                 .build();
     }
 

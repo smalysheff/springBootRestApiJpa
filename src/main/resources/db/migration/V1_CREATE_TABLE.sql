@@ -1,6 +1,6 @@
 create table hibernate_sequence (
     next_val bigint
-) engine=MyISAM;
+) engine=InnoDB;
 
 insert into hibernate_sequence values ( 1 );
 insert into hibernate_sequence values ( 1 );
@@ -12,7 +12,7 @@ CREATE TABLE users(
     last_name  varchar(255) null,
     login      varchar(255) not null,
     password   varchar(255) not null
-) engine=MyISAM;
+) engine=InnoDB;
 
 CREATE TABLE todo(
     id bigint auto_increment primary key,
@@ -21,7 +21,7 @@ CREATE TABLE todo(
     user_id   bigint       null,
     constraint FKdcopxq1yu1u8ijb7rjexhsr6v
         foreign key (user_id) references users (id)
-) engine=MyISAM;
+) engine=InnoDB;
 
 
 
