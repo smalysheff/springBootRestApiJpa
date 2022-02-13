@@ -11,7 +11,7 @@ spring:
     password: 9874123
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
   jooq:
     sql-dialect: MysqlDialect

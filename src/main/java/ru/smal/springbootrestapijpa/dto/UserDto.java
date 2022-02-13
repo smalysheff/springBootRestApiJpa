@@ -1,9 +1,10 @@
 package ru.smal.springbootrestapijpa.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import ru.smal.springbootrestapijpa.persistence.entity.User;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,15 +18,17 @@ public class UserDto {
     String lastName;
     String login;
     String email;
+    List<TodoDto> todos;
 
     public static UserDto build(User user) {
-        UserDto dto = new UserDto();
-        dto.setId(user.getId());
-        dto.setFirstName(user.getFirstName());
-        dto.setLastName(user.getLastName());
-        dto.setLogin(user.getLogin());
-        dto.setEmail(user.getEmail());
-        return dto;
+        return UserDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .login(user.getLogin())
+                .email(user.getEmail())
+                .todos(user.getTodos().stream().map(TodoDto::build).toList())
+                .build();
     }
 
 }
