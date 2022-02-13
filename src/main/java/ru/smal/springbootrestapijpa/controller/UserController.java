@@ -27,14 +27,11 @@ public class UserController {
         return service.findAll();
     }
 
-    /**
-     * body
-     * {
-     * "firstName": "Ivan",
-     * "lastName": "Ivanov",
-     * "email": "mail@mail.ru"
-     * }
-     */
+    @GetMapping("{id}")
+    public ResponseEntity<UserDto> getObjectById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
     @PostMapping
     public ResponseEntity<UserDto> saveObject(@RequestBody User user) {
         UserDto save = service.save(user);
@@ -42,36 +39,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
-    /** localhost:8080/api/employees/1 */
-    @GetMapping("{id}")
-    public ResponseEntity<UserDto> getEmployeeById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(service.findById(id));
-    }
-
-    @GetMapping("search")
-    public ResponseEntity<UserDto> getEmployeeByFirstName(@RequestParam String firstName) {
-        return ResponseEntity.ok(service.findByFirstName(firstName));
-    }
-
-    /**
-     * 1) requestBody
-     *  {
-     *     "firstName": "Ivan",
-     *     "lastName": "Ivanov",
-     *     "email": "mail@mail.ru"
-     *  }
-     *
-     * 2) localhost:8080/api/employees/1
-     */
     @PutMapping("{id}")
-    public ResponseEntity<UserDto> updateEmployee(@PathVariable("id") Long id,
-                                               @RequestBody User user) {
+    public ResponseEntity<UserDto> updateObject(@PathVariable("id") Long id, @RequestBody User user) {
         return ResponseEntity.ok(service.update(user, id));
     }
 
-    /** localhost:8081/api/employee/1 */
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteObject(@PathVariable("id") Long id) {
         Long deleteById = service.deleteById(id);
         return ResponseEntity.ok("Deleted successfully!." + deleteById);
     }

@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.util.CollectionUtils;
 import ru.smal.springbootrestapijpa.persistence.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,10 @@ public class UserDto {
     String lastName;
     String login;
     String email;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
     List<TodoDto> todos;
+
 
     public static UserDto build(User user) {
         return UserDto.builder()
@@ -28,6 +32,8 @@ public class UserDto {
                 .lastName(user.getLastName())
                 .login(user.getLogin())
                 .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt() != null ? user.getUpdatedAt() : null)
                 .todos(CollectionUtils.isEmpty(user.getTodos())
                                 ? null
                                 : user.getTodos().stream().map(TodoDto::build).toList())
